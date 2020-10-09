@@ -47,6 +47,21 @@ class myTest(unittest.TestCase):
         self.assertEqual(mySu.checkColumn((1,1)), 0)
 
 
+    def test_findEmpty(self):
+        mySu = sudoku()
+
+        #full
+        puzzle = '743589261586412739219376458425937186967128345138645927894763512352891674671254893'
+        mySu.setGrid(puzzle)
+        self.assertEqual(mySu.findEmpty()[0],-1)
+
+        puzzle2 = '74.589261586412739219376458425937186967128345138645927894763512352891674671254893'
+        mySu.setGrid(puzzle2)
+        #need 0,0,0,2
+        self.assertEqual(mySu.findEmpty()[3],2)
+        self.assertEqual(mySu.findEmpty()[0],0)
+        
+
     def test_checkRow(self):
     # 2 if full and correct
     # 1 if missing but correct

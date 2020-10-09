@@ -16,6 +16,19 @@ class sudoku:
  Q   5 6 7  8 9 1  2 3 4
      ...
 
+
+    (q,k,j,i)
+
+    row:
+    a b c d e f
+
+    column:
+    a
+    b
+    c
+    d
+    e
+    f
     """
     def __createGrid(self):
         columns = []
@@ -40,7 +53,7 @@ class sudoku:
 
             print("---------------------")
 
-    #Setting grid with info fro puzzle, given as a string of numbers and dots for zero
+    #Setting grid with info from puzzle, given as a string of numbers and dots for zero
     def setGrid(self, puzzle):  
         #index of digit in puzzle
         count = 0
@@ -123,7 +136,7 @@ class sudoku:
         if resultRows >1 and  resultColumn > 1:
             return True
         
-        #Return true because didn't return false in all tests
+        #Return false because didn't return true in all tests
         return False
 
     #check entire grid
@@ -246,28 +259,35 @@ class sudoku:
             else:
                 print("returning false")
                 return False
-
+        solved = False
         for i in range(1,10):
             self.setCell(location, i)
             result = self.checkGridValid()
+            #print("trying ", i, " at location ", location)
 
             #finishd grid
             if result == 2:
-                print("finished solving grid inside function, it is:")
-                self.printGrid()
-                print("this is the real value inside function: ", self.checkGridValid())
-                print("this is square checking inside function",  self._checkSquare( (0,0)))
+            
                 return True
 
-
+            #wrong input, delete
             if result == 0:
                 self.setCell(location,0)
                 continue
 
+            #if reached here, last input was not wrong but also didn't complete board, try recursivly all other possible inputs after the current input
             solved = self._solveGrid( self.findEmpty())
             if solved:
-                print("solved is true")
                 return True
+            
+
+        if solved == False:
+            #wrong input, delete
+            self.setCell(location,0)
+            return False
+
+        
+                
 
 
 
@@ -285,15 +305,11 @@ puzzleComplete = '74358926158641273921937645842593718696712834513864592789476351
 ################5 instead of 4
 puzzleWrong = '753589261586412739219376458425937186967128345138645927894763512352891674671254893'
 puzzleMissing = '7.3589261586412739219376458425937186967128345138645927894763512352891674671254893'
-mySu.setGrid(puzzle)
+mySu.setGrid(puzzle2)
 
 print("after setting board:")
 
 mySu.printGrid()
-aPosition = (0,0,0,1)
-#print("the cell is ", getCell(grid, aPosition)
-#print("The grid in this cell is ", checkRowsColumns(grid,aPosition))
-#print("check grid valid is ", checkGridValid(grid))
 
 
 mySu.solveGrid()
