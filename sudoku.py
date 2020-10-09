@@ -3,6 +3,20 @@ class sudoku:
         self.grid = self.__createGrid()
 
 
+    #Create new grid for sudoku class
+    #The index tuple for the grid is as follows:
+    """
+       J       J      J
+      i i i 
+    k 1 2 3  4 5 6  7 8 9
+ Q  k 2 3 4  5 6 7  8 9 1
+    k 3 4 5  6 7 8  9 1 2
+
+     4 5 6  7 8 9  1 2 3
+ Q   5 6 7  8 9 1  2 3 4
+     ...
+
+    """
     def __createGrid(self):
         columns = []
         for _ in range(0,3):
@@ -14,7 +28,6 @@ class sudoku:
         return columns
 
     def printGrid(self):
-
         for column in self.grid:
             for row in column:
                 strRow = ""
@@ -27,34 +40,44 @@ class sudoku:
 
             print("---------------------")
 
+    #Setting grid with info fro puzzle, given as a string of numbers and dots for zero
     def setGrid(self, puzzle):  
+        #index of digit in puzzle
         count = 0
-        for x, column in enumerate(self.grid):
-            
-            for y,row in enumerate(column):
-                for z,square in enumerate(row):
-                    for q, cell in enumerate(square):
+
+        for a in range(0,3):
+            for b in range(0,3):
+                for c in range(0,3):
+                    for d in range(0,3):
+
                         if puzzle[count] != '.':
-                            self.grid[x][y][z][q] = puzzle[count]
+                            self.setCell((a,b,c,d), int(puzzle[count]))
+                        else:
+                            self.setCell((a,b,c,d), 0)
                         count+=1
 
+    #Return single digit from board at position
     def getCell(self, position):
         return int(self.grid[position[0]][position[1]][position[2]][position[3]])
 
+    #Set a single digit at board at position, value is val
     def setCell(self, position, val):
         if not isinstance(val, int):
-            print("got bad value for set cell!")
-            exit(0)
+            raise("set cell method got value other than int!")
         self.grid[position[0]][position[1]][position[2]][position[3]] = val
 
+    #Checks entire row in grid
+    # 2 if full and correct
+    # 1 if missing but correct
+    # 0 if wrong
     def checkRow(self,loc):
         row = []
         for x in range(0,3):
             for cell in range(0,3):
-                if self.getCell( (loc[0],loc[1],x,cell)) != 0:
-                    row.append(self.getCell( (loc[0],loc[1],x,cell)))
+                aCell = self.getCell( (loc[0],loc[1],x,cell)) 
+                if aCell != 0:
+                    row.append(aCell)
             
-
         #Creates a set from the row of numbers, if there are duplicates, the set will be smaller
         reduced = set(row)
         if len(reduced) != len(row):
@@ -66,7 +89,10 @@ class sudoku:
             return 1
 
 
-
+    #Checks entire column in grid
+    # 2 if full and correct
+    # 1 if missing but correct
+    # 0 if wrong
     def checkColumn(self,loc):
         column = []
         for x in range(0,3):
@@ -187,6 +213,7 @@ class sudoku:
         return 1
 
 
+    #Function to find next empty cell in a grid, if found none, return default (-1,-1,-1,-1) 
     def findEmpty(self):
         for row in range(0,3):
             for column in range(0,3):
@@ -197,6 +224,7 @@ class sudoku:
         return (-1,-1,-1,-1)
 
 
+    #Main method to solve the grid using backtracking
     def solveGrid(self):
         empty = self.findEmpty()
         # Were givin full grid
@@ -208,6 +236,7 @@ class sudoku:
         print( self._solveGrid(empty))
 
         
+    #Recursive method used by solveGrid to find the solution for the sudoku puzzle
     def _solveGrid(self,location):
 
         #Starting function with no spaces left, probably because grid is done, check it
@@ -241,11 +270,10 @@ class sudoku:
                 return True
 
 
-    print("Starting program")
 
-  
+
+print("Starting program")
 mySu = sudoku()
-
 
 puzzle = '8.4....3..3.......5..4.6.1..1.....65.79.6...3..8....4..43..19......5........78...'
 puzzle2 = '72..491.5..5........3....27.3...........1...4.4......1.62.7..1.....9.5.6.1.5.3.4.'
@@ -271,9 +299,3 @@ aPosition = (0,0,0,1)
 mySu.solveGrid()
 print("after solving with backtracking")
 mySu.printGrid()
-
-#print("printing puzzle with problem:")
-#grid2 = createGrid()
-#setGrid(grid2, puzzleProblem)
-#printGrid(grid2)
-#print("value is ", checkGridValid(grid2))
