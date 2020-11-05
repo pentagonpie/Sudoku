@@ -71,6 +71,14 @@ class sudoku:
 
     #Return single digit from board at position
     def getCell(self, position):
+        if position[0] > 2 or position[0] < 0:
+            print("first parameter in getCell out of bounds")
+        if position[1] > 2 or position[1] < 0:
+            print("second parameter in getCell out of bounds")
+        if position[2] > 2 or position[2] < 0:
+            print("third parameter in getCell out of bounds")
+        if position[3] > 2 or position[3] < 0:
+            print("fourth parameter in getCell out of bounds")
         return int(self.grid[position[0]][position[1]][position[2]][position[3]])
 
     #Set a single digit at board at position, value is val
@@ -287,31 +295,3 @@ class sudoku:
             return False
 
         
-                
-
-
-
-
-print("Starting program")
-mySu = sudoku()
-
-puzzle = '8.4....3..3.......5..4.6.1..1.....65.79.6...3..8....4..43..19......5........78...'
-puzzle2 = '72..491.5..5........3....27.3...........1...4.4......1.62.7..1.....9.5.6.1.5.3.4.'
-
-puzzleProblem = '814234536233156478545476112112345665379661243458728341543411923621553784734878915'
-
-puzzleComplete = '743589261586412739219376458425937186967128345138645927894763512352891674671254893'
-
-################5 instead of 4
-puzzleWrong = '753589261586412739219376458425937186967128345138645927894763512352891674671254893'
-puzzleMissing = '7.3589261586412739219376458425937186967128345138645927894763512352891674671254893'
-mySu.setGrid(puzzle2)
-
-print("after setting board:")
-
-mySu.printGrid()
-
-
-mySu.solveGrid()
-print("after solving with backtracking")
-mySu.printGrid()
