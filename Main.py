@@ -151,11 +151,9 @@ def loadPuzzle(puzzle, hist, boxes):
     global emptyPuzzle
     global solvedPuzzle
     hist.append(newPuzzle)
-    print("loading puzzle: ", newPuzzle)
     difficultyOptionsOff()
     buttonLoad.on()
     mySu.setGrid(newPuzzle)
-    mySu.printGrid()
     emptyPuzzle = False
     solvedPuzzle = False
 
@@ -230,6 +228,7 @@ def changeBoxNumber(puzzle, number):
             currentSelected.selfUpdate()
 
 
+# Used for debugging and optimizing
 def main():
 
     mySu = sudoku()
@@ -241,16 +240,6 @@ def main():
 
 
 mySu = sudoku()
-
-
-startTime = datetime.now()
-# cProfile.run("main()")
-main()
-
-
-print("time to solve is:")
-print(datetime.now() - startTime)
-
 
 paths = [
     "puzzles/simple.txt",
@@ -298,7 +287,6 @@ buttons = []
 textBoxes = []
 
 for x in range(1, 10):
-    print("------")
     for y in range(1, 10):
         movement = int(sizeX / 13)
         offset = 3
@@ -307,15 +295,6 @@ for x in range(1, 10):
         # To see how a sudoku puzzle is stored, check in Sudoku class
         location = ((x - 1) // 3, (x - 1) % 3, (y - 1) // 3, (y - 1) % 3)
         cornerPoint = point(movement * y + offset, movement * x + offset)
-        print(
-            "location of textbox is ",
-            location,
-            ", at ",
-            movement * x,
-            ",",
-            movement * y,
-        )
-
         textBoxes.append(textBox(mySu, boxColor, cornerPoint, point(40, 40), location))
 
 
@@ -389,33 +368,27 @@ while not done:
                 and not emptyPuzzle
                 and not solvedPuzzle
             ):
-                print("starting to solve")
                 mySu.solveGrid()
                 update(textBoxes)
                 solvedPuzzle = True
 
             if buttonLoad.collidePoint(mouse) and buttonLoad.interact:
-                print("clicked on load")
                 loadClicked(textBoxes)
 
             # Chocing difficulty of puzzle to load with 4 buttons
             if buttonSimple.collidePoint(mouse) and buttonSimple.interact:
-                print("pressed buttonSimple")
                 newPuzzle = getRandom(puzzles, 0, hist)
                 loadPuzzle(newPuzzle, hist, textBoxes)
 
             if buttonEasy.collidePoint(mouse) and buttonEasy.interact:
-                print("pressed buttonEasy")
                 newPuzzle = getRandom(puzzles, 1, hist)
                 loadPuzzle(newPuzzle, hist, textBoxes)
 
             if buttonMedium.collidePoint(mouse) and buttonMedium.interact:
-                print("pressed buttonMedium")
                 newPuzzle = getRandom(puzzles, 2, hist)
                 loadPuzzle(newPuzzle, hist, textBoxes)
 
             if buttonHard.collidePoint(mouse) and buttonHard.interact:
-                print("pressed buttonHard")
                 newPuzzle = getRandom(puzzles, 3, hist)
                 loadPuzzle(newPuzzle, hist, textBoxes)
 

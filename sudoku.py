@@ -259,9 +259,7 @@ class sudoku:
             if self.checkGridValid() == 2:
                 return
 
-        print("calling the function")
         self._solveGrid()
-        print("counter is ", counter)
 
     # Recursive method used by solveGrid to find the solution for the sudoku puzzle
     def _solveGrid(self):
